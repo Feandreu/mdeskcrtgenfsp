@@ -26,7 +26,9 @@ cartconv -t md -i compilation.bin -o yourfilename.crt
 command may be used with VICE's cartconv utility.
 
 Avoid using multiple prg files.
+
 Avoid using any configuration file.
+
 For any further information please read original readme file.
  
 
@@ -60,6 +62,7 @@ Modification Notes
 ------------------
 
 This is a very simple/primitive modification that includes:
+
 1- Menu functions commented out so menu will not show up at startup.  
 
 2- Presses "1" on keyboard automatically so first *.prg file linked will launch. 
