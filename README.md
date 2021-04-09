@@ -30,7 +30,10 @@ Avoid using multiple prg files.
 Avoid using any configuration file.
 
 For any further information please read original readme file.
- 
+
+Python:  https://www.python.org/downloads/
+
+
 
 File Structure
 --------------
