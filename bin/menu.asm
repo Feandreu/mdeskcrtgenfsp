@@ -172,12 +172,15 @@ sc3:    jmp $0340
 
 CartCopy0340:
 .pseudopc $0340 {
+        sei
         ldx PrgLenLo:#00    //program length lo
         ldy PrgLenHi:#00    //program length hi
 cbank:  lda CartBank:#00    //cartridge start bank
         sta $de00           //cartridge bank switching address
 caddr:  lda CartAddr:$8200  //cartridge start adr
+        inc $0001
         sta MemAddr:$0801   //c64 memory start adr
+        dec $0001
         dex
         cpx #$ff
         bne cc1
@@ -187,37 +190,6 @@ caddr:  lda CartAddr:$8200  //cartridge start adr
 cc1:    inc MemAddr
         bne cc2
         inc MemAddr+1
-        // IO area check
-        lda MemAddr+1
-        cmp #$d0
-        bne cc2
-        // skip IO area
-        // 1. inc cart addr
-        inc CartAddr
-        bne caddr_1
-        inc CartAddr+1
-caddr_1:
-        // 2. update index ref
-        tya
-        sec
-        sbc #$10
-        tay
-        // 3. Update mem address
-        lda #$e0
-        sta MemAddr+1
-        // 4. Update cart address
-        lda CartAddr+1
-        clc
-        adc #$10
-        sta CartAddr+1
-        // 5. prepare bank switching
-        cmp #$a0
-        bcc caddr
-        sbc #$a0
-        clc
-        adc #$80
-        sta CartAddr+1
-        jmp cbank
 cc2:    inc CartAddr
         bne caddr
         inc CartAddr+1
@@ -230,6 +202,7 @@ cc2:    inc CartAddr
         jmp cbank
 crtoff: lda #$ff        //turn off cartridge
         sta $de00
+        cli
         lda MemAddr     //set end of program (var start)
         sta $2d
         sta $2f
